@@ -29,7 +29,7 @@ async def all_places():
                 "placename":"s2cinemas",
                 "placelat":"51.87",
                 "placelong":"84.87",
-                "distfromstay":"2"
+                "distfromstay":"5"
             }
         }
     }
