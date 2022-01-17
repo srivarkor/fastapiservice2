@@ -24,6 +24,12 @@ async def all_places():
                 "placelat":"74.07",
                 "placelong":"14.87",
                 "distfromstay":"50"
+            },
+            "s2cinemas":{
+                "placename":"s2cinemas",
+                "placelat":"51.87",
+                "placelong":"84.87",
+                "distfromstay":"2"
             }
         }
     }
