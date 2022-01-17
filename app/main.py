@@ -3,7 +3,7 @@ from fastapi import FastAPI
 
 app = FastAPI()
 
-@app.get("/all")
+@app.get("/places/all")
 async def all_places():
     return {
         "places":{
