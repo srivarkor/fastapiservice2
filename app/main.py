@@ -4,12 +4,12 @@ from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+# app.add_middleware(
+#     CORSMiddleware,
+#     allow_origins=["*"],
+#     allow_methods=["*"],
+#     allow_headers=["*"],
+# )
 
 @app.get("/places/all")
 async def all_places():
