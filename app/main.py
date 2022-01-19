@@ -11,7 +11,7 @@ app = FastAPI()
 #     allow_headers=["*"],
 # )
 
-@app.get("/places/all")
+@app.get("/places")
 async def all_places():
     return {
         "places":{
