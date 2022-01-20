@@ -7,12 +7,12 @@ from starlette.config import Config
 
 app = FastAPI()
 
-# app.add_middleware(
-#     CORSMiddleware,
-#     allow_origins=["*"],
-#     allow_methods=["*"],
-#     allow_headers=["*"],
-# )
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 GOOGLE_CLIENT_ID = "990351908927-skb7qrco82tqb5a9em7aid0gukd1s82s.apps.googleusercontent.com"
 GOOGLE_CLIENT_SECRET = "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"
 
