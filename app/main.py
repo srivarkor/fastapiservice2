@@ -67,9 +67,15 @@ async def all_places():
         }
     }
 
-@app.post("/googlesignin",status_code=status.HTTP_200_OK)
+@app.post("/googlesignin")
 async def google_signin(request:Request):
-    access_token = await oauth.google.authorize_access_token(request)
-    return {
-        "Access Token" : access_token
-    }
+    try:
+        access_token = await oauth.google.authorize_access_token(request)
+        user = access_token['userinfo']
+        return user
+    except Exception as e:
+        # print(e.__str__)
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail= str(e)
+        )
