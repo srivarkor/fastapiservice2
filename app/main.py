@@ -2,6 +2,7 @@ from fastapi import FastAPI, Request, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
 from authlib.integrations.starlette_client import OAuth
 from authlib.integrations.starlette_client import OAuthError
+from starlette.config import Config
 
 
 app = FastAPI()
