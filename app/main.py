@@ -71,11 +71,9 @@ async def google_signin(request:Request):
     try:
         access_token = await oauth.google.authorize_access_token(request)
     except OAuthError:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail='Could not validate credentials',
-            headers={'WWW-Authenticate': 'Bearer'},
-        )
+        return({
+            "request": request
+        })
     return({
         "access-token" : access_token
     })
