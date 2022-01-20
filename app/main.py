@@ -68,12 +68,4 @@ async def all_places():
 
 @app.post("/googlesignin")
 async def google_signin(request:Request):
-    try:
-        access_token = await oauth.google.authorize_access_token(request)
-    except OAuthError:
-        return({
-            "request": request
-        })
-    return({
-        "access-token" : access_token
-    })
+    return request
