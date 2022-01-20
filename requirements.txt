@@ -4,3 +4,5 @@ uvicorn==0.17.0
 Authlib==0.15.5
 httpx==0.21.3
 itsdangerous==2.0.1
+google-auth==2.3.3
+requests==2.27.1

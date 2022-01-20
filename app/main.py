@@ -1,11 +1,14 @@
-from http import HTTPStatus
-from fastapi import FastAPI, Request, HTTPException, status
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from authlib.integrations.starlette_client import OAuth, OAuthError
-from authlib.integrations.starlette_client import OAuthError
-from starlette.config import Config
 from starlette.middleware.sessions import SessionMiddleware
+from pydantic import BaseModel
+from google.oauth2 import id_token as google_id_token
+from google.auth.transport import requests as google_requests
 
+
+class Auth_Token(BaseModel):
+    id_token: str
+    access_token: str
 
 app = FastAPI()
 
@@ -13,6 +16,8 @@ origins = [
     "http://localhost",
     "http://localhost:8000",
 ]
+
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
@@ -23,18 +28,8 @@ app.add_middleware(
 
 app.add_middleware(SessionMiddleware, secret_key="secret-string")
 
-
 GOOGLE_CLIENT_ID = "990351908927-skb7qrco82tqb5a9em7aid0gukd1s82s.apps.googleusercontent.com"
 GOOGLE_CLIENT_SECRET = "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"
-
-config_data = {'GOOGLE_CLIENT_ID': GOOGLE_CLIENT_ID, 'GOOGLE_CLIENT_SECRET': GOOGLE_CLIENT_SECRET}
-starlette_config = Config(environ=config_data)
-oauth = OAuth(starlette_config)
-oauth.register(
-    name='google',
-    server_metadata_url='https://accounts.google.com/.well-known/openid-configuration',
-    client_kwargs={'scope': 'openid email profile'},
-)
 
 @app.get("/places")
 async def all_places():
@@ -68,16 +63,16 @@ async def all_places():
     }
 
 @app.post("/googlesignin")
-async def google_signin(request:Request):
-    print("Inside......")
-    print(request['idtoken'])
-    try:
-        access_token = await oauth.google.authorize_access_token(request)
-        user = access_token['userinfo']
-        return user
-    except Exception as e:
-        # print(e.__str__)
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail= str(e)
-        )
+async def google_signin(auth_token:Auth_Token):
+    idtoken = auth_token.id_token
+    # accesstoken = auth_token.access_token
+    request = google_requests.Request()
+    id_info = google_id_token.verify_oauth2_token(idtoken, request, GOOGLE_CLIENT_ID)
+    user_id = id_info['sub']
+    user_email = id_info['email']
+    print(user_id," : ",user_email)
+    return {
+        "userd_id":user_id,
+        "user_email":user_email
+    }
+
