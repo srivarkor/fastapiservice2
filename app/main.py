@@ -68,4 +68,4 @@ async def all_places():
 
 @app.post("/googlesignin")
 async def google_signin(request:Request):
-    return request
+    return request.json()
