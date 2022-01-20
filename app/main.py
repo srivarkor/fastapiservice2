@@ -1,5 +1,7 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
+from authlib.integrations.starlette_client import OAuth
+from authlib.integrations.starlette_client import OAuthError
 
 
 app = FastAPI()
@@ -10,6 +12,17 @@ app = FastAPI()
 #     allow_methods=["*"],
 #     allow_headers=["*"],
 # )
+GOOGLE_CLIENT_ID = "990351908927-skb7qrco82tqb5a9em7aid0gukd1s82s.apps.googleusercontent.com"
+GOOGLE_CLIENT_SECRET = "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"
+
+config_data = {'GOOGLE_CLIENT_ID': GOOGLE_CLIENT_ID, 'GOOGLE_CLIENT_SECRET': GOOGLE_CLIENT_SECRET}
+starlette_config = Config(environ=config_data)
+oauth = OAuth(starlette_config)
+oauth.register(
+    name='google',
+    server_metadata_url='https://accounts.google.com/.well-known/openid-configuration',
+    client_kwargs={'scope': 'openid email profile'},
+)
 
 @app.get("/places")
 async def all_places():
@@ -42,3 +55,16 @@ async def all_places():
         }
     }
 
+@app.post("/googlesignin")
+async def google_signin(request:Request):
+    try:
+        access_token = await oauth.google.authorize_access_token(request)
+    except OAuthError:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail='Could not validate credentials',
+            headers={'WWW-Authenticate': 'Bearer'},
+        )
+    return({
+        "access-token" : access_token
+    })
