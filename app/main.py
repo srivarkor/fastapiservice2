@@ -69,7 +69,8 @@ async def all_places():
 
 @app.post("/googlesignin",status_code=status.HTTP_200_OK)
 async def google_signin(request:Request):
-   return {
+    print(request.json)
+    return {
         "places":{
             "warangalfort":{
                 "placename":"warangalfort",
