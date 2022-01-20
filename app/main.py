@@ -70,6 +70,7 @@ async def all_places():
 @app.post("/googlesignin")
 async def google_signin(request:Request):
     try:
+        print(request['idtoken'])
         access_token = await oauth.google.authorize_access_token(request)
         user = access_token['userinfo']
         return user
