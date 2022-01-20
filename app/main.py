@@ -69,7 +69,7 @@ async def all_places():
 
 @app.post("/googlesignin",status_code=status.HTTP_200_OK)
 async def google_signin(request:Request):
-    s = request.body()
+    s = request.json()
     return {
-        "Received" : s.__str__
+        "Received" : s
     }
